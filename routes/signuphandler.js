@@ -12,4 +12,5 @@ route.get('/signupB',(req,res)=>{
     res.render('signupB.ejs')
 })
 
+
 module.exports=route
