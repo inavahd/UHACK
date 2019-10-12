@@ -1,15 +1,15 @@
 const route=require('express').Router()
 
 route.get('/loginS',(req,res)=>{
-    res.render('LoginS.ejs')
+    res.render('loginS.ejs')
 })
 
 route.get('/loginP',(req,res)=>{
-    res.render('LoginP.ejs')
+    res.render('loginP.ejs')
 })
 
 route.get('/loginL',(req,res)=>{
-    res.render('LoginL.ejs')
+    res.render('loginL.ejs')
 })
 
 module.exports=route

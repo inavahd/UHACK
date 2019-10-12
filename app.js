@@ -13,7 +13,7 @@ var passport    = require("passport"),
 
 mongoose.connect("mongodb://localhost:27017/uhack", {useNewUrlParser: true})
 
-app.set("view-engine","ejs")
+//app.set("view-engine","ejs")
 
 app.use(bodyParser.urlencoded({extended: true}))
 
@@ -29,6 +29,8 @@ app.use(function(req, res, next){
    next();
 })
 
+const signupRoute=require('./routes/signuphandler')
+const loginRoute=require('./routes/loginhandler')
 
 passport.use(new LocalStrategy(Buyer.authenticate()));
 passport.serializeUser(Buyer.serializeUser());
@@ -46,7 +48,8 @@ app.get('/',function(req,res){
     res.render("landing.ejs",{currentUser: req.user});
 })
 
-
+app.use(signupRoute)
+app.use(loginRoute)
 
 
 function isLoggedIn(req, res, next){
