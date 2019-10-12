@@ -12,8 +12,5 @@ route.get('/loginL',(req,res)=>{
     res.render('loginL.ejs')
 })
 
-route.post('/loginS',(req,res)=>{
-    res.render('seller.ejs')
-})
 
 module.exports=route

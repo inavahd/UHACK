@@ -121,12 +121,77 @@ app.get('/upload',(req,res)=>{
     res.render('upload.ejs')
 })
 
-app.get('/upload2',(req,res)=>{
-    res.render('upload2.ejs')
+
+app.post("/loginS", passport.authenticate("local", 
+    {
+        successRedirect: "/Seller",
+        failureRedirect: "/loginS"
+    }), function(req, res){
+})
+app.get("/Seller" , function(req,res){
+    res.render("seller.ejs")
 })
 
-app.post('/invoiceDetails',(req,res)=>{
-    res.redirect('/upload2')
+//app.get('/upload2',(req,res)=>{
+//    res.render('upload2.ejs')
+//})
+
+//app.post('/invoiceDetails',(req,res)=>{
+//    res.redirect('/upload2')
+//})
+
+app.post("/invoiceDetails", function(req,res){
+     var newD = new Discount({ 
+                                amount: req.body.amount,
+                                dueDate: req.body.date,
+                                setteled: "no",
+                             });
+    var buyername = req.body.buyername;
+     var sellername = req.body.sellername;
+//    var sellerid = req.user.id;
+    Discount.create(newD, function(err, discount){
+        if(err){
+            console.log(err)
+        } else {
+            console.log("new discount")
+            
+//            Seller.findById(sellerid,function(err,seller){
+//                if(err){
+//                    console.log(err)
+//                } else {
+//                    discount.seller=seller;
+//                    discount.save();
+//                    console.log("added seller to discount")
+//                }
+//            })
+            
+            Buyer.findOne({name:buyername}).exec(function(err, buyer) {
+                    if(err){
+                        console.log(err)
+                    } else {
+                        discount.buyer=buyer;
+//                        discount.save();
+                        console.log(discount)
+                        console.log("added buyer to discount")
+                    }
+                    });
+            Seller.findOne({name:sellername}).exec(function(err, seller) {
+                if(err){
+                    console.log(err)
+                } else {
+                    discount.seller=seller;
+                    discount.save();
+                    console.log(discount)
+                    console.log("added seller to discount")
+                }
+                });
+            
+            
+            
+            console.log(discount)
+        }
+    })
+    res.redirect("/upload");
 })
 
 
@@ -134,7 +199,7 @@ function isLoggedIn(req, res, next){
     if(req.isAuthenticated()){
         return next();
     }
-    res.redirect("/login");
+    res.redirect("/");
 }
 
 app.listen(4000, function(){
