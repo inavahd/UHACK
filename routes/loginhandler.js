@@ -13,7 +13,7 @@ route.get('/loginL',(req,res)=>{
 })
 
 route.post('/loginS',(req,res)=>{
-    res.render('upload.ejs')
+    res.render('seller.ejs')
 })
 
 module.exports=route

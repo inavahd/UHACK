@@ -117,6 +117,17 @@ app.post("/signupB", function(req, res){
     });
 })
 
+app.get('/upload',(req,res)=>{
+    res.render('upload.ejs')
+})
+
+app.get('/upload2',(req,res)=>{
+    res.render('upload2.ejs')
+})
+
+app.post('/invoiceDetails',(req,res)=>{
+    res.redirect('/upload2')
+})
 
 
 function isLoggedIn(req, res, next){
@@ -126,6 +137,6 @@ function isLoggedIn(req, res, next){
     res.redirect("/login");
 }
 
-app.listen(3000, function(){
+app.listen(4000, function(){
     console.log("The app has started!!");
 })
