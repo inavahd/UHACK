@@ -16,7 +16,7 @@ mongoose.connect("mongodb://localhost:27017/uhack", {useNewUrlParser: true})
 //app.set("view-engine","ejs")
 
 app.use(bodyParser.urlencoded({extended: true}))
-
+app.use(bodyParser.json())
 app.use(require("express-session")({
     secret: "COE-2 is shit!",
     resave: false,
@@ -49,7 +49,71 @@ app.get('/',function(req,res){
 })
 
 app.use(signupRoute)
+
+
 app.use(loginRoute)
+
+
+app.post("/signupS", function(req, res){
+    var newUser = new Seller({ 
+                                username: req.body.username,
+                                contact: req.body.lcontactnum,
+                                emailId: req.body.email,
+                                name: req.body.firstname,
+                             });
+    Seller.register(newUser, req.body.password, function(err, user){
+        if(err){
+            console.log(err);
+            return res.render("signupS.ejs",{currentUser: req.user});
+        }
+        passport.authenticate("local")(req, res, function(){
+//           res.redirect("/campgrounds"); 
+            res.send("signed up as seller")
+        });
+    });
+})
+
+
+app.post("/signupL", function(req, res){
+    var newUser = new Lender({ 
+                                username: req.body.username,
+                                contact: req.body.lcontactnum,
+                                emailId: req.body.email,
+                                name: req.body.firstname,
+                             });
+    Lender.register(newUser, req.body.password, function(err, user){
+        if(err){
+            console.log(err);
+            return res.render("signupL.ejs",{currentUser: req.user});
+        }
+        passport.authenticate("local")(req, res, function(){
+//           res.redirect("/campgrounds"); 
+            res.send("signed up as lender")
+        });
+    });
+})
+
+
+app.post("/signupB", function(req, res){
+    var newUser = new Buyer({ 
+                                username: req.body.username,
+                                contact: req.body.lcontactnum,
+                                emailId: req.body.email,
+                                name: req.body.firstname,
+                                defaults: "0"
+                             });
+    Buyer.register(newUser, req.body.password, function(err, user){
+        if(err){
+            console.log(err);
+            return res.render("signupB.ejs",{currentUser: req.user});
+        }
+        passport.authenticate("local")(req, res, function(){
+//           res.redirect("/campgrounds"); 
+            res.send("signed up as buyer")
+        });
+    });
+})
+
 
 
 function isLoggedIn(req, res, next){
