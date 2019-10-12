@@ -6,8 +6,8 @@ const express = require("express");
 const multer = require("multer");
 const path = require("path");
 
-app.use(express.urlencoded({ extended: true }));
-app.use(express.static(__dirname + "/public"));
+route.use(express.urlencoded({ extended: true }));
+route.use(express.static(__dirname + "/public"));
 
 const uploadDir = "./uploads";
 

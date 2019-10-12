@@ -31,6 +31,7 @@ app.use(function(req, res, next){
 
 const signupRoute=require('./routes/signuphandler')
 const loginRoute=require('./routes/loginhandler')
+const uploadRoute=require('./routes/uploadHandler')
 
 passport.use(new LocalStrategy(Buyer.authenticate()));
 passport.serializeUser(Buyer.serializeUser());
@@ -53,6 +54,8 @@ app.use(signupRoute)
 
 app.use(loginRoute)
 
+app.use(uploadRoute)
+
 
 app.post("/signupS", function(req, res){
     var newUser = new Seller({ 
@@ -68,7 +71,7 @@ app.post("/signupS", function(req, res){
         }
         passport.authenticate("local")(req, res, function(){
 //           res.redirect("/campgrounds"); 
-            res.send("signed up as seller")
+            res.redirect('/loginS')
         });
     });
 })
@@ -88,7 +91,7 @@ app.post("/signupL", function(req, res){
         }
         passport.authenticate("local")(req, res, function(){
 //           res.redirect("/campgrounds"); 
-            res.send("signed up as lender")
+            res.redirect('/loginL')
         });
     });
 })
@@ -109,7 +112,7 @@ app.post("/signupB", function(req, res){
         }
         passport.authenticate("local")(req, res, function(){
 //           res.redirect("/campgrounds"); 
-            res.send("signed up as buyer")
+            res.redirect('/loginB')
         });
     });
 })
