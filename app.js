@@ -4,7 +4,12 @@ var app = express()
 var mongoose = require("mongoose")
 var passport    = require("passport"),
     LocalStrategy = require("passport-local"),
-    User        = require("./models/user");
+    //User        = require("./models/user"),
+    Buyer        = require("./models/buyer"),
+    Discount       = require("./models/discount"),
+    Lender        = require("./models/lender"),
+    Seller      = require("./models/seller"),
+    Proposal     = require("./models/proposal");
 
 mongoose.connect("mongodb://localhost:27017/uhack", {useNewUrlParser: true})
 
@@ -25,12 +30,20 @@ app.use(function(req, res, next){
 })
 
 
-passport.use(new LocalStrategy(User.authenticate()));
-passport.serializeUser(User.serializeUser());
-passport.deserializeUser(User.deserializeUser());
+passport.use(new LocalStrategy(Buyer.authenticate()));
+passport.serializeUser(Buyer.serializeUser());
+passport.deserializeUser(Buyer.deserializeUser());
+
+passport.use(new LocalStrategy(Lender.authenticate()));
+passport.serializeUser(Lender.serializeUser());
+passport.deserializeUser(Lender.deserializeUser());
+
+passport.use(new LocalStrategy(Seller.authenticate()));
+passport.serializeUser(Seller.serializeUser());
+passport.deserializeUser(Seller.deserializeUser());
 
 app.get('/',function(req,res){
-    res.render("landing.ejs");
+    res.render("landing.ejs",{currentUser: req.user});
 })
 
 
