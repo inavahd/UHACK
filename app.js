@@ -24,6 +24,7 @@ app.use(require("express-session")({
 }));
 app.use(passport.initialize());
 app.use(passport.session());
+
 app.use(function(req, res, next){
    res.locals.currentUser = req.user;
    next();
@@ -33,13 +34,13 @@ const signupRoute=require('./routes/signuphandler')
 const loginRoute=require('./routes/loginhandler')
 const uploadRoute=require('./routes/uploadHandler')
 
-passport.use(new LocalStrategy(Buyer.authenticate()));
-passport.serializeUser(Buyer.serializeUser());
-passport.deserializeUser(Buyer.deserializeUser());
-
-passport.use(new LocalStrategy(Lender.authenticate()));
-passport.serializeUser(Lender.serializeUser());
-passport.deserializeUser(Lender.deserializeUser());
+//passport.use(new LocalStrategy(Buyer.authenticate()));
+//passport.serializeUser(Buyer.serializeUser());
+//passport.deserializeUser(Buyer.deserializeUser());
+//
+//passport.use(new LocalStrategy(Lender.authenticate()));
+//passport.serializeUser(Lender.serializeUser());
+//passport.deserializeUser(Lender.deserializeUser());
 
 passport.use(new LocalStrategy(Seller.authenticate()));
 passport.serializeUser(Seller.serializeUser());
@@ -128,6 +129,7 @@ app.post("/loginS", passport.authenticate("local",
         failureRedirect: "/loginS"
     }), function(req, res){
 })
+
 app.get("/Seller" , function(req,res){
     res.render("seller.ejs")
 })
@@ -148,43 +150,43 @@ app.post("/invoiceDetails", function(req,res){
                              });
     var buyername = req.body.buyername;
      var sellername = req.body.sellername;
-//    var sellerid = req.user.id;
+    var sellerid = req.user.id;
     Discount.create(newD, function(err, discount){
         if(err){
             console.log(err)
         } else {
             console.log("new discount")
             
-//            Seller.findById(sellerid,function(err,seller){
-//                if(err){
-//                    console.log(err)
-//                } else {
-//                    discount.seller=seller;
+            Seller.findById(sellerid,function(err,seller){
+                if(err){
+                    console.log(err)
+                } else {
+                    discount.seller=seller;
 //                    discount.save();
-//                    console.log("added seller to discount")
-//                }
-//            })
+                    console.log("added seller to discount")
+                }
+            })
             
             Buyer.findOne({name:buyername}).exec(function(err, buyer) {
                     if(err){
                         console.log(err)
                     } else {
                         discount.buyer=buyer;
-//                        discount.save();
+                        discount.save();
                         console.log(discount)
                         console.log("added buyer to discount")
                     }
                     });
-            Seller.findOne({name:sellername}).exec(function(err, seller) {
-                if(err){
-                    console.log(err)
-                } else {
-                    discount.seller=seller;
-                    discount.save();
-                    console.log(discount)
-                    console.log("added seller to discount")
-                }
-                });
+//            Seller.findOne({name:sellername}).exec(function(err, seller) {
+//                if(err){
+//                    console.log(err)
+//                } else {
+//                    discount.seller=seller;
+//                    discount.save();
+//                    console.log(discount)
+//                    console.log("added seller to discount")
+//                }
+//                });
             
             
             
